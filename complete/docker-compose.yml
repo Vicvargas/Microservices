@@ -7,4 +7,4 @@ services:
       dockerfile: Dockerfile
     image: compresion
     ports:
-      - 8080
+      - "8081:8080"

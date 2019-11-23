@@ -17,7 +17,7 @@ public class Application {
 
     @RequestMapping("/")
     public String home() {
-        return "Hello Docker World";
+        return "Compression Microservice running";
     }
 
     public static void main(String[] args) {

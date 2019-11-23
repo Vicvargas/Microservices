@@ -2,6 +2,7 @@ package CompressionMicroservice.controller;
 
 
 import CompressionMicroservice.controller.response.EncodeResponse;
+import CompressionMicroservice.linkedlist.SimpleLinkedList;
 import CompressionMicroservice.service.EncodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Encargado de recibir las señales de codificación
+ */
 
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET,RequestMethod.POST})
@@ -25,6 +28,12 @@ public class EncoderController {
     @Autowired
     private EncodeService encodeService;
 
+    /**
+     * POST encode
+     * @param file
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/encode", method = {RequestMethod.POST})
     public ResponseEntity<EncodeResponse> encode(@RequestParam("file") MultipartFile file) throws IOException {
 
@@ -37,17 +46,15 @@ public class EncoderController {
 
         System.out.printf("File name = %s, size = %s\n", file.getOriginalFilename(),file.getSize());
 
-        return ResponseEntity.ok().build();
-    }
+        //List<String> records = new ArrayList<String>();
+        SimpleLinkedList<String> records = new SimpleLinkedList<String>();
 
-    @RequestMapping(value = "/encode", method = {RequestMethod.GET})
-    public ResponseEntity<EncodeResponse> encodeGet(@RequestParam(value = "text") String text){
-        List<String> records = new ArrayList<String>();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("/home/josecespedesant/Microservices/CompressionMicroservice/Microservices/gs-spring-boot-docker/complete/"+text));
+            BufferedReader reader = new BufferedReader(new FileReader(convFile));
             String line;
             while((line = reader.readLine()) != null){
-                records.add(line);
+                records.addLast(line);
+                //records.add(line);
             }
             reader.close();
         } catch (FileNotFoundException e) {
@@ -58,16 +65,17 @@ public class EncoderController {
 
         String finalstring = "";
 
-        for(int i=0; i<records.size(); i++){
-            finalstring += records.get(i);
+        for(int i=0; i<records.getLength(); i++){
+            finalstring += records.getFirst().getData();
+            records.deleteFront();
             finalstring += "æ";
         }
 
+
         EncodeResponse response = encodeService.encode(finalstring);
+        convFile.delete();
+
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
-
-
 
 }

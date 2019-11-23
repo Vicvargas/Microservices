@@ -17,6 +17,11 @@ public class DecoderController {
     @Autowired
     private DecodeService decodeService;
 
+    /**
+     * POST decode
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/decode", method = RequestMethod.POST)
     public ResponseEntity<DecodeResponse> encode(@RequestBody DecodeRequest request) {
         DecodeResponse response;

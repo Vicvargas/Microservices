@@ -5,7 +5,10 @@ server:
 spring:
   application:
     name: testLatticeApp
-
+  datasource:
+    url: jdbc:mysql://mysql-standalone:3306/test
+    username: sa
+    password: password
 ribbon:
   ServerListRefreshInterval: 1000
 
