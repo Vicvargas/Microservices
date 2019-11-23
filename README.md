@@ -1,2 +1,2 @@
 # Microservices
-Proyecto III del curso Algorimos y Estructuras de Datos II
+Proyecto III del curso Algoritmos y Estructuras de Datos II
