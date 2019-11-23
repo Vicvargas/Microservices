@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  springboot-docker-compose-app-container:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: compresion
+    ports:
+      - 8080
